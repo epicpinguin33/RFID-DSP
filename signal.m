@@ -5,7 +5,7 @@ classdef signal
     properties
         horizontal;
         vertical;
-        timeAxis;
+%        timeAxis;
         sampleRate;
         origin;
         destination;
@@ -18,7 +18,7 @@ classdef signal
                 obj.vertical = vertical;
                 if nargin()>1
                     obj.sampleRate=sampleRate;
-                    obj.timeAxis = linspace(0, length(vertical) / sampleRate,length(vertical));
+%                    obj.timeAxis = linspace(0, length(vertical) / sampleRate,length(vertical));
                     if nargin()>2
                         obj.horizontal = horizontal;
                     end
@@ -27,24 +27,29 @@ classdef signal
         end
         
 % set functions
-        function obj = setHorizontal(obj,inputArg)
-          obj.horizontal = inputArg;
-        end
-        
-        function obj = setVertical(obj,inputArg)
-          obj.vertical = inputArg;
-        end
-        
-        function obj = setTimeAxis(obj,inputArg)
-            obj.timeAxis = inputArg;
-        end
-        
-        function obj = setSignalPath(obj,origin,destination)
-            obj.origin = origin;
-            obj.destination = destination;
-        end
+%         function obj = setHorizontal(obj,inputArg)
+%           obj.horizontal = inputArg;
+%         end
+%         
+%         function obj = setVertical(obj,inputArg)
+%           obj.vertical = inputArg;
+%         end
+%         
+%         function obj = setTimeAxis(obj,inputArg)
+%             obj.timeAxis = inputArg;
+%         end
+%         
+%         function obj = setSignalPath(obj,origin,destination)
+%             obj.origin = origin;
+%             obj.destination = destination;
+%         end
         
 % get functions
+        function r = plus(a,b)
+            r.vertical=a.vertical+b.vertical;
+            r.horizontal=a.horizontal+b.horizontal;
+        end
+
         function r = gHorizontal(obj)
             r = obj.horizontal;
         end
@@ -69,9 +74,9 @@ classdef signal
             r = fft(obj.gAbs);
         end
         
-        function r = gTimeAxis(obj)
-            r = obj.timeAxis;
-        end
+%         function r = gTimeAxis(obj)
+%             r = obj.timeAxis;
+%         end
         
         function r = gSampleRate(obj)
             r = obj.sampleRate;

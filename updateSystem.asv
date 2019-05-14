@@ -26,5 +26,5 @@ s.D_d.vertical=zeroPad(s.D_d.vertical,paddingLength);
 s.C_R.vertical=zeroPad(s.C_R.vertical,paddingLength);
 s.O_R0.vertical=zeroPad(s.O_R0.vertical,paddingLength); 
 
-plotSignal(app,app.Plots.Title,s.simSampleRate)
+plotSignal(app,'b',s.simSampleRate)
 end

@@ -1,11 +1,11 @@
-function systemSideView = SelectTaglocation(systemSideView)
+function r = SelectTaglocation(s,position)
 %APP.SYSTEMSIDEVIEW Summary of this function goes here
 %   Detailed explanation goes here
 fig=figure();
+fig.Position=position;
 ax=subplot(1,1,1);
-plot(ax,systemSideView.Xaxis,systemSideView.Yaxis)
-plot(ax,rand(1),rand(1),'x')
-assignin('base','ax',systemSideView)
-%systemSideView=ax
+plotSideView(ax,s.geometry)
+[r]=ginput(1);
+close
 end
 

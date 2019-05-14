@@ -1,9 +1,7 @@
-function plotBlockResponse(app,block,sampleRate)
+function plotBlockResponse(app,block,SampleRate)
 %PLOTRESPONSE used to plot a systemBlock struct into the impulseresponse,
 %amplituderepsonse and phase response figures.
-response=app.systemStruct.(block).gResponse();
-%assignin('base','response',response)
-plot(app.impulseResponse,linspace(0, length(response) / sampleRate , length(response)),response)
+plot(app.impulseResponse,app.systemStruct.(block).gResponse(),)
 
 freqResponse=app.systemStruct.(block).gFFT();
 plot(app.amplitudeResponse,abs(freqResponse))
