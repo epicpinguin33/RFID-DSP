@@ -5,7 +5,6 @@ classdef systemBlock
     properties
         response;
         inputSignal;
-        outputSignal;
     end
     
     methods
