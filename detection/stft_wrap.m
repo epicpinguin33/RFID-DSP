@@ -5,7 +5,7 @@ overlap =  wins - t_incr;
 [s,f,t] = stft(y,fs,'Window',win ,'OverlapLength',overlap,'FFTLength',wins* 2);
 sabs = abs(s);
 
-imagesc(sabs)
+imagesc(t,f,sabs)
 
 f_out = zeros(2,size(sabs,1)*size(sabs,2));
 ampl = zeros(1, size(f_out,2));
