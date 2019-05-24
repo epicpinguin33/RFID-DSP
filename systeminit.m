@@ -1,10 +1,10 @@
 function [s] = systeminit(app)
 
-addpath('function generators')
+%addpath('function generators')
 
 s.simSampleRate = 100;
 s.digSampleRate = 10;
-s.geometry.d = 0.1;
+s.geometry.d = 0.5;
 s.geometry.R = 1;
 s.geometry.R0= 2;
 s.geometry.GroundDepth=0.4;
@@ -34,7 +34,7 @@ s.C_R=s.R.gOutput(s.C,s.simSampleRate);
 
 s.R0=getDelay(s.geometry.R0,s.simSampleRate);
 s.T_R0=s.R0.gOutput(s.Tx,s.simSampleRate);
-s.Background=systemBlock(.5);
+s.Background=systemBlock([.5;rand(s.simSampleRate*3,1).^4*.15]);
 s.O=s.Background.gOutput(s.T_R0,s.simSampleRate);
 s.O_R0=s.R0.gOutput(s.O,s.simSampleRate);
 
@@ -42,12 +42,12 @@ paddingLength=max([length(s.D_d.vertical) length(s.C_R.vertical) length(s.O_R0.v
 s.D_d.vertical=zeroPad(s.D_d.vertical,paddingLength);
 s.C_R.vertical=zeroPad(s.C_R.vertical,paddingLength);
 s.O_R0.vertical=zeroPad(s.O_R0.vertical,paddingLength);
-%s.b=signal;
-s.Rx=s.D_d+s.C_R+s.O_R0;
+%s.RxNoise=signal(wgn(paddingLength,1,1),s.simSampleRate);
+s.Rx=s.D_d+s.C_R+s.O_R0;%+s.RxNoise;
 s.RX_antenna=systemBlock(5);
 s.b=s.RX_antenna.gOutput(s.Rx,s.simSampleRate);
 s.simTime = linspace(0, paddingLength / s.simSampleRate , paddingLength);
-%noise addition
+s.digitized=adcSimulation(s.b,s.simSampleRate,s.digSampleRate,[app.LowerADClimitEditField.Value,app.UpperADClimitEditField.Value],app.ADCnumberofbitsEditField.Value);
 if nargin()>0
    
     app.dEditField.Value=s.geometry.d;
@@ -57,6 +57,13 @@ if nargin()>0
     app.GroundDepthEditField.Value=s.geometry.GroundDepth;
     app.sampleRateEditField.Value=s.digSampleRate;
     plotSideView(app.systemSideView,s.geometry)
-    
+    epsilon=char(5+11*16+3*16^2);
+    permeability=char(12+11*16+3*16^2);
+    app.permittivity1EditFieldLabel.Text=[epsilon ' 1'];
+    app.permittivity2EditFieldLabel.Text=[epsilon ' 2'];
+    app.permittivity3EditFieldLabel.Text=[epsilon ' 3'];
+    app.permeability1EditFieldLabel.Text=[permeability ' 1'];
+    app.permeability2EditFieldLabel.Text=[permeability ' 2'];
+    app.permeability3EditFieldLabel.Text=[permeability ' 3'];
 end
 end

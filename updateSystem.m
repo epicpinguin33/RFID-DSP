@@ -31,9 +31,11 @@ s.Rx=s.D_d+s.C_R+s.O_R0;
 s.RX_antenna=systemBlock(5);
 s.b=s.RX_antenna.gOutput(s.Rx,s.simSampleRate);
 s.simTime = linspace(0, paddingLength / s.simSampleRate , paddingLength);
-
-try 
-    plotSignal(app,app.Plots.Title,s.simSampleRate)
+s.digitized=adcSimulation(s.b,s.simSampleRate,s.digSampleRate,[app.LowerADClimitEditField.Value,app.UpperADClimitEditField.Value],app.ADCnumberofbitsEditField.Value);
+try
+    plotSignal(app.impulseResponse,app.Plots.Title,s.simSampleRate)
+catch
+    app.Plots.Title='Select plot first';
 end
 %EM
 s.EM.eps(1)=app.permittivity1EditField.Value;
