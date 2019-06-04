@@ -2,7 +2,7 @@ clear all
 close all;
 
 P_t = 0.5e-3;
-r = 2;
+r = 4;
 clut_dis = 3;
 freq = 6 * 10^9;
 RCS = 10^(-45/10);

@@ -60,9 +60,14 @@ devs = [0.05 0.01];
 [n,Wn,beta,ftype] = kaiserord(fcuts,mags,devs,fs);
 n = n + rem(n,2);
 hh = fir1(n,Wn,ftype,kaiser(n+1,beta),'noscale');
+HH = fft(hh, size(mixer_out,2));
+%HH = [HH zeros(1,size(mixer_out,2) - length(HH))];
 
+% for i=1:4
+%     lp_out(i,:) = conv(mixer_out(i,:), hh);
+% end
 for i=1:4
-    lp_out(i,:) = conv(mixer_out(i,:), hh);
+    lp_out(i,:) = ifft(fft(mixer_out(i,:)) .* HH);
 end
 
 window_reach = ceil(fs/(2 * 100));
@@ -79,17 +84,27 @@ end
 
 MINUS = min(min(mean_out));
 MAXUS = max(max(mean_out));
+mean_out = mean_out / MAXUS;
+threshold_line = [2.32 2.32]/MAXUS;
+MINUS = min(min(mean_out));
+MAXUS = max(max(mean_out));
+
+
+
 figure;
 
 for k = 1:1:4
-        subplot(2,2,k)
         hold on 
         plot(mean_out(k,:));
-        plot([1,size(mean_out,2)],[2.32 2.32], 'r' )
+        plot([1,size(mean_out,2)],threshold_line, 'r' )
         plot([.4*(size(mean_out,2)) .4*(size(mean_out,2))],[MINUS,MAXUS], 'b' )
 
         ylim([MINUS MAXUS]);
 end
+legend('1000Hz','2000Hz','3000Hz','4000Hz','Threshold','Turn on time','location','northwest');
+xlabel('Samples')
+ylabel('Normalized power')
+
 
 
 
