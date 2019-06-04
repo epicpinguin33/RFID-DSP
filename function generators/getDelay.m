@@ -1,4 +1,5 @@
-function [response] = getDelay(R,sampleRate)
+function [r] = getDelay(R,sampleRate)
 %GETDELAY NS simulator
-response=systemBlock([zeros(1,R*sampleRate) 1]);
+attenuation=R^(-2);
+r=systemBlock([zeros(1,floor(R*sampleRate/299792458)) attenuation]);
 end

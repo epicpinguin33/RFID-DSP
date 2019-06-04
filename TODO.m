@@ -6,6 +6,4 @@
 
 % ADC simululeren
 
-% time axis in general struct, zeroPad call in plot function
-
 %

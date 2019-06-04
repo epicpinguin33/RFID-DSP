@@ -46,8 +46,12 @@ classdef signal
         
 % get functions
         function r = plus(a,b)
-            r.vertical=a.vertical+b.vertical;
-            r.horizontal=a.horizontal+b.horizontal;
+            r=signal();
+            if a.sampleRate==b.sampleRate
+                r.vertical=a.vertical+b.vertical;
+                r.horizontal=a.horizontal+b.horizontal;
+                r.sampleRate=a.sampleRate;
+            end
         end
 
         function r = gHorizontal(obj)
