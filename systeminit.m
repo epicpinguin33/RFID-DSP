@@ -18,7 +18,8 @@ s.geometry.scatterers.x=[];
 s.geometry.Tags=repmat([0;-2*s.geometry.GroundDepth],1,8);
 
 %s.a=getSine(20*pi,2,300,s.simSampleRate);
-s.a=signal(diff(diff(diff(gausswin(4000))))'*10e10);
+%s.a=signal(diff(diff(diff(gausswin(4000))))'*10e10);
+s.a=signal(mexihat(-4,4,4000));
 s.Source=systemBlock(1,1);
 s.TX_antenna=systemBlock(2);
 s.Tx=s.TX_antenna.gOutput(s.a,s.simSampleRate);
@@ -36,7 +37,7 @@ s.C_R=s.R.gOutput(s.C,s.simSampleRate);
 
 s.R0=getDelay(s.geometry.R0,s.simSampleRate);
 s.T_R0=s.R0.gOutput(s.Tx,s.simSampleRate);
-s.Background=systemBlock([.5;rand(4000*8,1).^4*.15]);
+s.Background=systemBlock([.5,rand(1,4000*8).^4*.15]);
 s.O=s.Background.gOutput(s.T_R0,s.simSampleRate);
 s.O_R0=s.R0.gOutput(s.O,s.simSampleRate);
 
@@ -47,7 +48,7 @@ s.O_R0.vertical=zeroPad(s.O_R0.vertical,paddingLength);
 %s.RxNoise=signal(wgn(paddingLength,1,1),s.simSampleRate);
 s.Rx=s.D_d+s.C_R+s.O_R0;%+s.RxNoise;
 s.RX_antenna=systemBlock(5);
-%s.b=s.RX_antenna.gOutput(s.Rx,s.simSampleRate);
+s.b=s.RX_antenna.gOutput(s.Rx,s.simSampleRate);
 s.simTime = linspace(0, paddingLength / s.simSampleRate , paddingLength);
 %s.digitized=adcSimulation(s.b,s.simSampleRate,s.digSampleRate,[app.LowerADClimitEditField.Value,app.UpperADClimitEditField.Value],app.ADCnumberofbitsEditField.Value);
 if nargin()>0
